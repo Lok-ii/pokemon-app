@@ -160,7 +160,7 @@ const Filter = () => {
               isLoading={false}
               isClearable={true}
               isSearchable={true}
-              name="color"
+              name={list.label}
               options={list.options}
               onInputChange={() => {
                 console.log(list.ref.current.getValue());

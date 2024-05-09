@@ -1,11 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import colorData from "../../Data/colorData.json";
 import { setTab } from "../../Redux/detailsSlice";
-import { useEffect } from "react";
 
-const Tabs = () => {
+const Tabs = ({ details }) => {
   const dispatch = useDispatch();
-  const { details, selectedTab } = useSelector((store) => store.details);
+  const { selectedTab } = useSelector((store) => store.details);
   const tabs = [
     {
       name: "Base Stats",

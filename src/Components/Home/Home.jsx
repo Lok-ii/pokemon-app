@@ -13,6 +13,7 @@ import Filter from "./Filter";
 import Search from "./Search";
 import Navbar from "../Navbar/Navbar";
 import FrontPage from "./FrontPage";
+import { setTab } from "../../Redux/detailsSlice";
 
 bouncy.register();
 
@@ -29,10 +30,10 @@ const Home = () => {
   };
   useEffect(() => {
     getData();
+    dispatch(setTab("baseStats"));
   }, []);
   return (
     <>
-      <FrontPage />
       <Navbar />
       <div className="w-full flex flex-wrap gap-y-16 items-center justify-around mt-64">
         <Search />

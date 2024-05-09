@@ -12,8 +12,12 @@ export default {
         redAndWhite: "linear-gradient(#C5312A 50%, white 50%)",
       },
       fontFamily: {
+        pokemon: "Pokemon, sans-serif",
         inglobal: "'inglobal', sans-serif;",
         archive: "'Archive', sans-serif;",
+      },
+      screens: {
+        xs: "320px",
       },
     },
   },

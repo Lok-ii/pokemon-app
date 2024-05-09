@@ -2,8 +2,7 @@ import { ProgressBar } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const Stats = () => {
-  const { details } = useSelector((store) => store.details);
+const Stats = ({ details }) => {
   return (
     <div className="w-full flex flex-col gap-4">
       <div className="w-full flex flex-col gap-4">

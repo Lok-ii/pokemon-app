@@ -34,9 +34,9 @@ const Title = ({ details }) => {
         <p className="font-archive text-[2rem] text-gray">#{details.id}</p>
         <MdOutlineCatchingPokemon
           className={`w-[3rem] h-[3rem] cursor-pointer ${
-            bookmarks.indexOf(details.id) == -1 ? "" : "fill-primaryRed"
+            bookmarks.every((e) => e.id !== details.id) ? "" : "fill-primaryRed"
           }`}
-          onClick={() => dispatch(setBookmarks(details.id))}
+          onClick={() => dispatch(setBookmarks(details))}
         />
         <p>Bookmark</p>
       </div>

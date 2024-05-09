@@ -3,10 +3,11 @@ import logo from "../../assets/Logo.png";
 import Home from "./Home";
 import Filter from "./Filter";
 import loader from "../../assets/loader.gif";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const FrontPage = () => {
   const [open, setOpen] = useState(false);
+  const navigateTo = useNavigate();
 
   useEffect(() => {
     const getOpen = Boolean(localStorage.getItem("open"));
@@ -28,7 +29,7 @@ const FrontPage = () => {
               open ? "block" : "hidden"
             }`}
           >
-            <Link to={"/bookmarks"}>
+            <div>
               <div className="relative w-full">
                 <div className="border-black border-[1px] rotate-180 absolute top-[45%] left-[30.5%] h-[3rem]" />
               </div>
@@ -37,12 +38,14 @@ const FrontPage = () => {
                 className="w-[2rem] h-[2rem] absolute left-[29.6%] top-[75%]"
                 alt=""
               />
-              <p className="font-archive absolute top-[130%] left-[27.5%]">
+              <Link
+                to={"/bookmarks"}
+                className="font-archive absolute top-[130%] left-[27.5%]"
+              >
                 Bookmarks
-              </p>
-            </Link>
-            <Link
-              to={"/compare"}
+              </Link>
+            </div>
+            <div
               className={`absolute top-0 left-0 w-full h-[4rem] ${
                 open ? "block" : "hidden"
               }`}
@@ -55,10 +58,13 @@ const FrontPage = () => {
                 className="w-[2rem] h-[2rem] absolute right-[29.6%] top-[75%]"
                 alt=""
               />
-              <p className="font-archive absolute top-[130%] right-[25.5%]">
+              <Link
+                to={"/compare"}
+                className="font-archive absolute top-[130%] right-[25.5%]"
+              >
                 Compare Pokemons
-              </p>
-            </Link>
+              </Link>
+            </div>
           </div>
           <div
             className={`cursor-pointer absolute border-[3rem] bg-white border-black rounded-[50%] ${
@@ -68,6 +74,7 @@ const FrontPage = () => {
             } flex items-center justify-center transition-all duration-1000 ease-in-out`}
             onClick={() => {
               localStorage.setItem("open", "true");
+              navigateTo("/");
               setOpen(true);
             }}
           >
@@ -98,7 +105,6 @@ const FrontPage = () => {
             </div>
           </div>
         </div>
-        {/* <Filter /> */}
       </div>
     </>
   );

@@ -11,9 +11,25 @@ export const getPokemons = async (url) => {
   return { pokemons, next: response.data.next, count: response.data.count };
 };
 
+export const getPokemonList = async () => {
+  const response = await axios.get(`${baseUrl}/pokemon?limit=1025`);
+  const linkArray = response.data.results.map((item) => {
+    return { label: item.name, value: item.url };
+  });
+  return linkArray;
+};
+
 export const getByName = async (name) => {
-  const pokemon = await axios.get(`${baseUrl}/pokemon/${name}`);
-  return pokemon.data;
+  try {
+    const pokemon = await axios.get(`${baseUrl}/pokemon/${name}`);
+    return { success: true, ...pokemon.data };
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      error: "Go back or you can get electrocuted",
+    };
+  }
 };
 
 export const getAbilities = async (url) => {

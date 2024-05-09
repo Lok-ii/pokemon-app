@@ -7,6 +7,13 @@ const initialState = {
   bookmarks: [],
   moves: [],
   selectedTab: "baseStats",
+  selectList: [],
+  compareOnePokemon: "bulbasaur",
+  compareTwoPokemon: "venusaur",
+  compareOneData: {},
+  compareTwoData: {},
+  abilitiesOne: {},
+  abilitiesTwo: {},
 };
 
 const detailsSlice = createSlice({
@@ -26,19 +33,61 @@ const detailsSlice = createSlice({
       state.moves = action.payload;
     },
     setBookmarks: (state, action) => {
-      if (state.bookmarks.indexOf(action.payload) == -1) {
-        state.bookmarks.push(action.payload);
+      if (action.payload.type === "local") {
+        state.bookmarks = action.payload.data;
       } else {
-        state.bookmarks.splice(state.bookmarks.indexOf(action.payload), 1);
+        if (state.bookmarks.some((e) => e.id === action.payload.id)) {
+          state.bookmarks = state.bookmarks.filter(
+            (e) => e.id !== action.payload.id
+          );
+        } else {
+          state.bookmarks = [...state.bookmarks, action.payload];
+        }
       }
+      console.log(state.bookmarks);
+      localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
+    },
+    setSelectList: (state, action) => {
+      state.selectList = action.payload;
     },
     setTab: (state, action) => {
       state.selectedTab = action.payload;
     },
+    setCompareOne: (state, action) => {
+      state.compareOnePokemon = action.payload;
+    },
+    setCompareTwo: (state, action) => {
+      state.compareTwoPokemon = action.payload;
+    },
+    setCompareOneData: (state, action) => {
+      state.compareOneData = action.payload;
+    },
+    setCompareTwoData: (state, action) => {
+      state.compareTwoData = action.payload;
+    },
+    setAbilitiesOne: (state, action) => {
+      state.abilitiesOne = action.payload;
+    },
+    setAbilitiesTwo: (state, action) => {
+      state.abilitiesTwo = action.payload;
+    },
   },
 });
 
-export const { setDetails, setLoading, setAbilities, setBookmarks, setMoves, setTab } =
-  detailsSlice.actions;
+export const {
+  setDetails,
+  setLoading,
+  setAbilities,
+  setBookmarks,
+  setMoves,
+  setTab,
+  setSelectList,
+  setCompareOne,
+  setCompareTwo,
+  setCompareOneData,
+  setCompareTwoData,
+  setAbilitiesOne,
+  setAbilitiesTwo,
+} = detailsSlice.actions;
 
 export default detailsSlice.reducer;

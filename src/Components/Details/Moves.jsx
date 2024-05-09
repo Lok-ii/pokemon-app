@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { getMoves } from "../../utils/fetchPokemons";
 import { useDispatch, useSelector } from "react-redux";
 import { setMoves } from "../../Redux/detailsSlice";
 
-const Moves = ({ color }) => {
+const Moves = ({ color, details }) => {
   const dispatch = useDispatch();
-  const { details, moves } = useSelector((store) => store.details);
+  const { moves } = useSelector((store) => store.details);
   useEffect(() => {
     const movesData = async () => {
       const movesArray = await getMoves(details.moves);

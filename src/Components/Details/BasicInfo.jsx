@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const BasicInfo = ({ details }) => {
   return (
     <>
-      <div className="border-y-[1px] border-lightGray w-full flex justify-between p-4">
+      <div className="border-y-[1px] border-lightGray w-full flex xs:flex-wrap md:flex-nowrap gap-4 justify-between p-4">
         <div className="w-full flex flex-col items-center border-r-[1px] border-lightGray">
           <p className="font-inglobal font-bold text-[1.5rem]">
             {details.weight} kg
