@@ -20,7 +20,9 @@ const Bookmarks = () => {
       })}
     </div>
   ) : (
-    <div>NO BOOKMARKS</div>
+    <div className="w-full flex flex-wrap gap-y-16 items-center justify-around mt-64">
+      NO BOOKMARKS
+    </div>
   );
 };
 
