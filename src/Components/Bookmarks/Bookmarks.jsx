@@ -13,14 +13,14 @@ const Bookmarks = () => {
     }
   }, []);
   console.log(bookmarks);
-  return (
-    bookmarks && (
-      <div className="w-full flex flex-wrap gap-y-16 items-center justify-around mt-64">
-        {bookmarks.map((bookmark) => {
-          return <PokemonCard key={bookmark.id} pokemon={bookmark} />;
-        })}
-      </div>
-    )
+  return bookmarks ? (
+    <div className="w-full flex flex-wrap gap-y-16 items-center justify-around mt-64">
+      {bookmarks.map((bookmark) => {
+        return <PokemonCard key={bookmark.id} pokemon={bookmark} />;
+      })}
+    </div>
+  ) : (
+    <div>NO BOOKMARKS</div>
   );
 };
 
