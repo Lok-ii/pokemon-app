@@ -9,7 +9,7 @@ export default {
         lightGray: "#D4D4D4",
       },
       backgroundImage: {
-        redAndWhite: "linear-gradient(#C5312A 50%, transparent 50%)",
+        redAndWhite: "linear-gradient(#C5312A 50%, white 50%)",
       },
       fontFamily: {
         inglobal: "'inglobal', sans-serif;",

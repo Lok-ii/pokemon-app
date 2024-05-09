@@ -5,12 +5,22 @@ import { store } from "./Redux/store";
 import Home from "./Components/Home/Home";
 import Details from "./Components/Details/Details";
 import FrontPage from "./Components/Home/FrontPage";
+import Bookmarks from "./Components/Bookmarks/Bookmarks";
+import Compare from "./Components/Compare/Compare";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Home />,
+    },
+    {
+      path: "/bookmarks",
+      element: <Bookmarks />,
+    },
+    {
+      path: "/compare",
+      element: <Compare />,
     },
     {
       path: "/details/:name",

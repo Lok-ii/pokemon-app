@@ -11,6 +11,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { bouncy } from "ldrs";
 import Filter from "./Filter";
 import Search from "./Search";
+import Navbar from "../Navbar/Navbar";
+import FrontPage from "./FrontPage";
 
 bouncy.register();
 
@@ -30,6 +32,8 @@ const Home = () => {
   }, []);
   return (
     <>
+      <FrontPage />
+      <Navbar />
       <div className="w-full flex flex-wrap gap-y-16 items-center justify-around mt-64">
         <Search />
         <Filter />
