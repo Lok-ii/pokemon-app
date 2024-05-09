@@ -1,4 +1,3 @@
-import React from "react";
 import Title from "../Details/Title";
 import BasicInfo from "../Details/BasicInfo";
 import Tabs from "../Details/Tabs";
@@ -7,6 +6,7 @@ import Moves from "../Details/Moves";
 import { useSelector } from "react-redux";
 import Stats from "../Details/Stats";
 import FlavourText from "../Details/FlavourText";
+import PropTypes from "prop-types";
 
 const CompareDetails = ({ data, abilities }) => {
   const { selectedTab } = useSelector((store) => store.details);
@@ -33,6 +33,11 @@ const CompareDetails = ({ data, abilities }) => {
       )}
     </div>
   );
+};
+
+CompareDetails.propTypes = {
+  data: PropTypes.object.isRequired,
+  abilities: PropTypes.array.isRequired,
 };
 
 export default CompareDetails;

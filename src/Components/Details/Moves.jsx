@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { getMoves } from "../../utils/fetchPokemons";
 import { useDispatch, useSelector } from "react-redux";
 import { setMoves } from "../../Redux/detailsSlice";
+import PropTypes from "prop-types";
 
 const Moves = ({ color, details }) => {
   const dispatch = useDispatch();
@@ -50,6 +51,10 @@ const Moves = ({ color, details }) => {
         })}
     </div>
   );
+};
+Moves.propTypes = {
+  color: PropTypes.string.isRequired,
+  details: PropTypes.object.isRequired,
 };
 
 export default Moves;

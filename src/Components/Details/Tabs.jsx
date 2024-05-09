@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import colorData from "../../Data/colorData.json";
 import { setTab } from "../../Redux/detailsSlice";
+import PropTypes from "prop-types";
 
 const Tabs = ({ details }) => {
   const dispatch = useDispatch();
@@ -58,6 +59,10 @@ const Tabs = ({ details }) => {
       })}
     </div>
   );
+};
+
+Tabs.propTypes = {
+  details: PropTypes.object.isRequired,
 };
 
 export default Tabs;

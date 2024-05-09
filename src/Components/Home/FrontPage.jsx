@@ -1,18 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import logo from "../../assets/Logo.png";
-import Home from "./Home";
-import Filter from "./Filter";
 import loader from "../../assets/loader.gif";
 import { Link, useNavigate } from "react-router-dom";
+import Search from "./Search";
+import { setOpen } from "../../Redux/homeSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const FrontPage = () => {
-  const [open, setOpen] = useState(false);
   const navigateTo = useNavigate();
+  const dispatch = useDispatch();
+  const { open } = useSelector((store) => store.home);
 
   useEffect(() => {
     const getOpen = Boolean(localStorage.getItem("open"));
     if (getOpen) {
-      setOpen(true);
+      dispatch(setOpen(true));
     }
   }, []);
   return (
@@ -73,9 +75,9 @@ const FrontPage = () => {
                 : "h-[30rem] w-[30rem] top-[-700%] left-[33%]"
             } flex items-center justify-center transition-all duration-1000 ease-in-out`}
             onClick={() => {
-              localStorage.setItem("open", "true");
               navigateTo("/");
-              setOpen(true);
+              localStorage.setItem("open", "true");
+              dispatch(setOpen(true));
             }}
           >
             <div
@@ -105,6 +107,7 @@ const FrontPage = () => {
             </div>
           </div>
         </div>
+        <Search />
       </div>
     </>
   );

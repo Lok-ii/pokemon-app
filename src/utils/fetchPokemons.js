@@ -6,8 +6,14 @@ export const getPokemons = async (url) => {
   const response = await axios.get(url);
   const linkArray = response.data.results.map((item) => axios.get(item.url));
   const pokemonData = await Promise.all(linkArray);
-  const pokemons = pokemonData.map((item) => item.data);
-  // console.log(pokemons);
+  let pokemons = pokemonData.map((item) => item.data);
+  const detailedData = pokemons.map((data) =>
+    axios.get(data.location_area_encounters)
+  );
+  const resolveDetails = await Promise.all(detailedData);
+  pokemons = resolveDetails.map((item, idx) => {
+    return { ...pokemons[idx], locations: item.data };
+  });
   return { pokemons, next: response.data.next, count: response.data.count };
 };
 
@@ -71,6 +77,7 @@ export const getFilterLists = async () => {
       id: item.url.split("/")[6],
     };
   });
+  abilitiesData.sort((a, b) => a.label.localeCompare(b.label));
 
   const locations = await axios.get(`${baseUrl}/location-area?limit=1054`);
   const locationsData = locations.data.results.map((item) => {
@@ -91,7 +98,7 @@ export const getFilterLists = async () => {
   });
 
   const groups = await axios.get(`${baseUrl}/egg-group/`);
-  const groupsData = groups.data.results.map((item) => {
+  let groupsData = groups.data.results.map((item) => {
     return {
       label: item.name,
       value: item.url,
@@ -116,4 +123,9 @@ export const getFilterLists = async () => {
     species: speciesData,
     habitats: habitatsData,
   };
+};
+
+export const getSpecificData = async (url) => {
+  const data = await axios.get(url);
+  return data.data;
 };

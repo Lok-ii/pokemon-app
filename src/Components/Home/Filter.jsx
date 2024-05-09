@@ -1,26 +1,15 @@
 import Select from "react-select";
-import { getFilterLists } from "../../utils/fetchPokemons";
+import { getFilterLists, getSpecificData } from "../../utils/fetchPokemons";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setAbilitiesSelect,
   setError,
   setFilteredData,
-  setGroupSelect,
-  setHabitatSelect,
   setLists,
-  setLocationSelect,
-  setSpeciesSelect,
-  setTypesSelect,
+  setSelectedFilters,
 } from "../../Redux/homeSlice";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 const Filter = () => {
-  const abilityRef = useRef("");
-  const typeRef = useRef("");
-  const locationRef = useRef("");
-  const habitatRef = useRef("");
-  const groupRef = useRef("");
-  const speciesRef = useRef("");
   const dispatch = useDispatch();
   const {
     pokemons,
@@ -29,15 +18,9 @@ const Filter = () => {
     typeList,
     locationList,
     speciesList,
-    charactersticsList,
+    filterOptions,
     groupList,
     habitatList,
-    abilitiesSelect,
-    typesSelect,
-    locationSelect,
-    speciesSelect,
-    groupSelect,
-    habitatSelect,
     error,
   } = useSelector((store) => store.home);
   const getLists = async () => {
@@ -47,34 +30,28 @@ const Filter = () => {
 
   const listArray = [
     {
-      label: "Ability",
+      label: "ability",
       options: abilityList,
-      ref: abilityRef,
     },
     {
-      label: "Types",
+      label: "type",
       options: typeList,
-      ref: typeRef,
     },
     {
-      label: "Locations",
+      label: "location",
       options: locationList,
-      ref: locationRef,
     },
     {
-      label: "Species",
+      label: "species",
       options: speciesList,
-      ref: speciesRef,
     },
     {
-      label: "Groups",
+      label: "group",
       options: groupList,
-      ref: groupRef,
     },
     {
-      label: "Habitats",
+      label: "habitat",
       options: habitatList,
-      ref: habitatRef,
     },
   ];
 
@@ -83,70 +60,70 @@ const Filter = () => {
   }, []);
 
   useEffect(() => {
-    let filterArray = [];
-    if (abilityRef.current.getValue.length !== 0) {
-      filterArray = filteredData.filter((pokemon) => {
-        return pokemon.abilities.some((e) => {
-          console.log(e.ability.name, abilityRef.current.getValue[0].label);
-          return e.ability.name === abilityRef.current.getValue[0].label;
+    const filterPokemons = async () => {
+      let filterArray = [...filteredData];
+      if (filterOptions.ability !== "") {
+        filterArray = filterArray.filter((pokemon) => {
+          return pokemon.abilities.some((e) => {
+            return e.ability.name === filterOptions.ability;
+          });
         });
-      });
-    }
+      }
 
-    if (typeRef.current.getValue.length !== 0) {
-      filterArray = filterArray.filter((pokemon) => {
-        return pokemon.types.some((e) => {
-          console.log(e.type.name, typeRef.current.getValue[0].label);
-          return e.type.name === typeRef.current.getValue[0].label;
+      if (filterOptions.type !== "") {
+        filterArray = filterArray.filter((pokemon) => {
+          return pokemon.types.some((e) => {
+            return e.type.name === filterOptions.type;
+          });
         });
-      });
-    }
+      }
+      if (filterOptions.location !== "") {
+        filterArray = filterArray.filter((pokemon) => {
+          return pokemon.locations.some((e) => {
+            return e.location_area.name === filterOptions.location;
+          });
+        });
+      }
 
-    if (filterArray.length > 0) {
-      dispatch(setFilteredData(filterArray));
-      dispatch(setError(""));
-    } else {
-      dispatch(setFilteredData(pokemons));
-      dispatch(setError("No Results Found"));
-    }
+      if (filterOptions.species !== "") {
+        filterArray = filterArray.filter((pokemon) => {
+          return pokemon.species.name === filterOptions.species;
+        });
+      }
 
-    if (
-      abilityRef.current.getValue.length === 0 &&
-      typeRef.current.getValue.length === 0 &&
-      locationRef.current.getValue.length === 0 &&
-      speciesRef.current.getValue.length === 0 &&
-      groupRef.current.getValue.length === 0 &&
-      habitatRef.current.getValue.length === 0
-    ) {
-      dispatch(setFilteredData(pokemons));
-      dispatch(setError(""));
-    }
-  }, [
-    abilityRef.current,
-    typeRef.current,
-    locationRef.current,
-    speciesRef.current,
-    groupRef.current,
-    habitatRef.current,
-    dispatch,
-  ]);
-  // const selectValues = (value, type) => {
-  //   if (type === "Ability") {
-  //     dispatch(setAbilitiesSelect(value));
-  //   } else if (type === "Types") {
-  //     dispatch(setTypesSelect(value));
-  //   } else if (type === "Groups") {
-  //     dispatch(setGroupSelect(value));
-  //   } else if (type === "Habitats") {
-  //     dispatch(setHabitatSelect(value));
-  //   } else if (type === "Species") {
-  //     dispatch(setSpeciesSelect(value));
-  //   } else if (type === "Locations") {
-  //     dispatch(setLocationSelect(value));
-  //   }
-  // };
+      if (filterOptions.habitat !== "") {
+        const getHabitatData = await getSpecificData(filterOptions.habitat);
+
+        filterArray = filterArray.filter((pokemon) => {
+          return getHabitatData.some((e) => e.name === pokemon.name);
+        });
+      }
+
+      if (
+        Object.values(filterOptions).every((e) => e == "") &&
+        filterArray.length == 0
+      ) {
+        dispatch(setFilteredData(pokemons));
+        dispatch(setError(""));
+      } else if (
+        filterArray.length > 0 &&
+        Object.values(filterOptions).some((e) => e != "")
+      ) {
+        dispatch(setFilteredData(filterArray));
+        dispatch(setError(""));
+      } else {
+        dispatch(setFilteredData(pokemons));
+        dispatch(setError("No Results Found"));
+      }
+    };
+    filterPokemons();
+  }, [dispatch, filterOptions, pokemons]);
+
+  const selectValues = (value, name) => {
+    dispatch(setSelectedFilters({ name, value }));
+  };
   return (
-    <div className="w-full flex flex-col gap-4">
+    <div className="w-full flex flex-col gap-4 sticky top-[14.7rem] z-[90] bg-white">
       <div className="w-full flex items-center flex-wrap justify-around">
         {listArray.map((list, idx) => {
           return (
@@ -162,15 +139,24 @@ const Filter = () => {
               isSearchable={true}
               name={list.label}
               options={list.options}
-              onInputChange={() => {
-                console.log(list.ref.current.getValue());
+              onChange={(e) => {
+                if (e && e.label !== "habitat" && e.label !== "group") {
+                  selectValues(e.label, list.label);
+                } else if (
+                  e &&
+                  (e.label === "habitat" || e.label === "group")
+                ) {
+                  selectValues(e.id, list.label);
+                } else {
+                  selectValues("", list.label);
+                }
               }}
               placeholder={`Select ${list.label}`}
             />
           );
         })}
       </div>
-      <div>{error}</div>
+      <div className="w-full flex items-center justify-center">{error}</div>
     </div>
   );
 };

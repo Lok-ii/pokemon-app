@@ -22,7 +22,7 @@ import Stats from "./Stats";
 import FrontPage from "../Home/FrontPage";
 import Navbar from "../Navbar/Navbar";
 
-const Details = ({ name }) => {
+const Details = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const { details, loading, abilities, selectedTab } = useSelector(
@@ -31,7 +31,7 @@ const Details = ({ name }) => {
 
   const pokemonByName = async () => {
     dispatch(setLoading(true));
-    const pokemon = await getByName(params.name || name);
+    const pokemon = await getByName(params.name);
     dispatch(setDetails(pokemon));
     const abilityArray = pokemon.abilities.map((item) => {
       const abilities = getAbilities(item.ability.url);
@@ -61,7 +61,10 @@ const Details = ({ name }) => {
               <>
                 <Tabs details={details} />
                 {selectedTab === "moves" && (
-                  <Moves color={colorData[details?.types[0]?.type.name]} />
+                  <Moves
+                    color={colorData[details?.types[0]?.type.name]}
+                    details={details}
+                  />
                 )}
                 {selectedTab === "baseStats" && <Stats details={details} />}
                 {selectedTab === "flavour" && (

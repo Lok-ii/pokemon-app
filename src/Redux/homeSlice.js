@@ -25,6 +25,7 @@ const initialState = {
     "unknown",
     "shadow",
   ],
+  open: false,
   filteredData: [],
   abilityList: [],
   typeList: [],
@@ -33,12 +34,14 @@ const initialState = {
   charactersticsList: [],
   groupList: [],
   habitatList: [],
-  abilitiesSelect: "",
-  typesSelect: "",
-  locationSelect: "",
-  speciesSelect: "",
-  groupSelect: "",
-  habitatSelect: "",
+  filterOptions: {
+    ability: "",
+    type: "",
+    location: "",
+    species: "",
+    group: "",
+    habitat: "",
+  },
   error: "",
 };
 
@@ -48,6 +51,9 @@ const homeSlice = createSlice({
   reducers: {
     setPokemons: (state, action) => {
       state.pokemons = [...state.pokemons, ...action.payload];
+    },
+    setOpen: (state, action) => {
+      state.open = action.payload;
     },
     setPageLink: (state, action) => {
       state.pageLink = action.payload;
@@ -68,26 +74,15 @@ const homeSlice = createSlice({
       state.groupList = action.payload.groups;
       state.habitatList = action.payload.habitats;
     },
-    setAbilitiesSelect: (state, action) => {
-      state.abilitiesSelect = action.payload;
-    },
-    setTypesSelect: (state, action) => {
-      state.typesSelect = action.payload;
-    },
-    setLocationSelect: (state, action) => {
-      state.locationSelect = action.payload;
-    },
-    setSpeciesSelect: (state, action) => {
-      state.speciesSelect = action.payload;
-    },
-    setGroupSelect: (state, action) => {
-      state.groupSelect = action.payload;
-    },
-    setHabitatSelect: (state, action) => {
-      state.habitatSelect = action.payload;
-    },
     setError: (state, action) => {
       state.error = action.payload;
+    },
+    setSelectedFilters: (state, action) => {
+      state.filterOptions = {
+        ...state.filterOptions,
+        [action.payload.name]: action.payload.value,
+      };
+      console.log(state.filterOptions);
     },
   },
 });
@@ -97,13 +92,9 @@ export const {
   setPageLink,
   setFilteredData,
   setLists,
-  setAbilitiesSelect,
-  setTypesSelect,
-  setLocationSelect,
-  setSpeciesSelect,
-  setGroupSelect,
-  setHabitatSelect,
   setError,
+  setSelectedFilters,
+  setOpen,
 } = homeSlice.actions;
 
 export default homeSlice.reducer;

@@ -4,9 +4,7 @@ import Select from "react-select";
 import colorData from "../../Data/colorData.json";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import FrontPage from "../Home/FrontPage";
-import loader from "../../assets/loader.gif";
-import pokeball from "../../assets/pika.avif";
+import PropTypes from "prop-types";
 
 const SubData = ({ name, compareData, abilities, setCompare }) => {
   const dispatch = useDispatch();
@@ -52,6 +50,13 @@ const SubData = ({ name, compareData, abilities, setCompare }) => {
       <CompareDetails data={compareData} abilities={abilities} />
     </div>
   );
+};
+
+SubData.propTypes = {
+  name: PropTypes.string.isRequired,
+  compareData: PropTypes.object.isRequired,
+  abilities: PropTypes.array.isRequired,
+  setCompare: PropTypes.func.isRequired,
 };
 
 export default SubData;
