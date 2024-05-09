@@ -92,13 +92,28 @@ const Filter = () => {
       }
 
       if (filterOptions.habitat !== "") {
-        const getHabitatData = await getSpecificData(filterOptions.habitat);
+        const getHabitatData = await getSpecificData(
+          `pokemon-habitat/${filterOptions.habitat}`
+        );
 
         filterArray = filterArray.filter((pokemon) => {
-          return getHabitatData.some((e) => e.name === pokemon.name);
+          return getHabitatData.pokemon_species.some(
+            (e) => e.name === pokemon.name
+          );
         });
       }
 
+      if (filterOptions.group !== "") {
+        const getGroupData = await getSpecificData(
+          `egg-group/${filterOptions.group}`
+        );
+
+        filterArray = filterArray.filter((pokemon) => {
+          return getGroupData.pokemon_species.some(
+            (e) => e.name === pokemon.name
+          );
+        });
+      }
       if (
         Object.values(filterOptions).every((e) => e == "") &&
         filterArray.length == 0
@@ -140,13 +155,8 @@ const Filter = () => {
               name={list.label}
               options={list.options}
               onChange={(e) => {
-                if (e && e.label !== "habitat" && e.label !== "group") {
+                if (e) {
                   selectValues(e.label, list.label);
-                } else if (
-                  e &&
-                  (e.label === "habitat" || e.label === "group")
-                ) {
-                  selectValues(e.id, list.label);
                 } else {
                   selectValues("", list.label);
                 }

@@ -126,6 +126,6 @@ export const getFilterLists = async () => {
 };
 
 export const getSpecificData = async (url) => {
-  const data = await axios.get(url);
+  const data = await axios.get(`${baseUrl}/${url}`);
   return data.data;
 };
